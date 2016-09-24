@@ -30,8 +30,8 @@ class ElsevierClient(object):
             raise ElsevierException('Quota Exceeded.')
 
 
-    def search_scopus(self, query):
-        return self._request('/search/scopus', { 'query': query })
+    def search_scopus(self, **kwargs):
+        return self._request('/search/scopus', kwargs)
 
     def search_science_direct(self, query):
         return self._request('/search/scidir', { 'query': query })
