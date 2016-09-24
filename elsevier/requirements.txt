@@ -1,4 +1,0 @@
-apiclient==1.0.2
-requests==2.11.1
-urllib3==1.10.4
-xmltodict==0.10.2
