@@ -1,15 +1,20 @@
 import requests
-
+import xmltodict
 from exceptions import ElsevierException
 import re
 
 
 class ElsevierClient(object):
+
     methods = {
         'search_scopus': '/search/scopus',
         'search_science_direct': '/search/scidir',
-        'retrieve_abstract': '/abstract/{id_type}/{id}'
-    }
+        'retrieve_abstract': '/abstract/{id_type}/{id}',
+        'retrieve_object_refs': '/object/{id_type}/{id}',
+        'retrieve_object': '/object/{id_type}/{id}/ref/{ref}',
+        'retrieve_image': '/object/{id_type}/{id}/ref/{ref}/{img_type}',
+        'retrieve_article': '/content/article/{id_type}/{id}'
+        }
 
     def __init__(self,
                  api_key,
@@ -28,17 +33,19 @@ class ElsevierClient(object):
                 response = requests.get(url, params)
         else:
             raise ElsevierException('No API Key.')
-        print 'response type: ' + response.headers['content-type']
         return self._parse_response(response)
 
     def _parse_response(self, response):
         if response.status_code == 200:
-            content_type = response.headers['content-type']
-            if content_type.startswith('application/json'):
+            content_type = response.headers['content-type'].split(';')[0]
+            if content_type == 'application/json':
                 return response.json()
+            elif content_type == 'text/xml':
+                return xmltodict.parse(response.content) 
             else:
-                raise ElsevierException('content-type ' +
-                    content_type + ' not yet supported') 
+                raise ElsevierException(
+                    'content type ' + content_type + ' not yet supported.')
+                
         elif response.status_code == 429:
             raise ElsevierException('Quota Exceeded.')
     
