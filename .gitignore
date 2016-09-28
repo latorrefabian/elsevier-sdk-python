@@ -60,3 +60,6 @@ venv_elsevier
 .DS_Store
 tests.py
 
+# Config file
+config.py
+config.pyc

@@ -48,6 +48,8 @@ class ElsevierClient(object):
                 
         elif response.status_code == 429:
             raise ElsevierException('Quota Exceeded.')
+        else:
+            raise ElsevierException('Response code: ' + str(response.status_code))
     
     def _api_method(self, endpoint):
         def method(**kwargs):
