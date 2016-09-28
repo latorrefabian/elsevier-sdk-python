@@ -13,7 +13,7 @@ class ElsevierClient(object):
         'retrieve_object_refs': '/object/{id_type}/{id}',
         'retrieve_object': '/object/{id_type}/{id}/ref/{ref}',
         'retrieve_image': '/object/{id_type}/{id}/ref/{ref}/{img_type}',
-        'retrieve_article': '/content/article/{id_type}/{id}'
+        'retrieve_article': '/article/{id_type}/{id}'
         }
 
     def __init__(self,
