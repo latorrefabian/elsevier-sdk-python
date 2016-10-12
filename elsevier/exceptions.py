@@ -1,3 +1,2 @@
 class ElsevierException(Exception):
     pass
-    

@@ -1,4 +1,4 @@
-import requests
+import request
 import xmltodict
 from exceptions import ElsevierException
 import re
@@ -16,9 +16,7 @@ class ElsevierClient(object):
         'retrieve_article': '/article/{id_type}/{id}'
         }
 
-    def __init__(self,
-                 api_key,
-                 host='http://api.elsevier.com/content'):
+    def __init__(self, api_key, host='http://api.elsevier.com/content'):
         self.api_key = api_key
         self.host = host
 
@@ -41,16 +39,17 @@ class ElsevierClient(object):
             if content_type == 'application/json':
                 return response.json()
             elif content_type == 'text/xml':
-                return xmltodict.parse(response.content) 
+                return xmltodict.parse(response.content)
             else:
                 raise ElsevierException(
                     'content type ' + content_type + ' not yet supported.')
-                
+
         elif response.status_code == 429:
             raise ElsevierException('Quota Exceeded.')
         else:
+            print response
             raise ElsevierException('Response code: ' + str(response.status_code))
-    
+
     def _api_method(self, endpoint):
         def method(**kwargs):
             endpoint_format_kwargs = re.findall('{([\w_]+)}', endpoint)
