@@ -2,8 +2,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Table, Column, Integer, String, ForeignKey
 from sqlalchemy import create_engine
 from sqlalchemy.engine.url import URL
-import settings
 from elsevier.exceptions import ElsevierException
+import settings
+
 
 Base = declarative_base()
 

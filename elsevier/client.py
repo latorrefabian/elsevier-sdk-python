@@ -1,4 +1,4 @@
-import request
+import requests
 import xmltodict
 from exceptions import ElsevierException
 import re
