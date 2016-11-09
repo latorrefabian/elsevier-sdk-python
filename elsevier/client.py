@@ -1,6 +1,6 @@
 import requests
 import xmltodict
-from exceptions import ElsevierException
+from .exceptions import ElsevierException
 import re
 
 
@@ -23,7 +23,7 @@ class ElsevierClient(object):
     def _request(self, endpoint, params, requestType='GET'):
         response = None
         if self.api_key is not None:
-            url = u'{0}{1}'.format(self.host, endpoint)
+            url = '{0}{1}'.format(self.host, endpoint)
             params['apiKey'] = self.api_key
             if requestType == 'POST':
                 response = requests.post(url, params)
@@ -47,7 +47,7 @@ class ElsevierClient(object):
         elif response.status_code == 429:
             raise ElsevierException('Quota Exceeded.')
         else:
-            print response
+            print(response)
             raise ElsevierException('Response code: ' + str(response.status_code))
 
     def _api_method(self, endpoint):

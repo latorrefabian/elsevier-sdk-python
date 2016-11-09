@@ -1,20 +1,9 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Table, Column, Integer, String, ForeignKey
-from sqlalchemy import create_engine
-from sqlalchemy.engine.url import URL
 from elsevier.exceptions import ElsevierException
-import settings
 
 
 Base = declarative_base()
-
-
-def db_connect():
-    """
-    Performs database connection using database settings from settings.py.
-    Returns sqlalchemy engine instance
-    """
-    return create_engine(URL(**settings.DATABASE))
 
 
 class Article(Base):
@@ -28,11 +17,11 @@ class Article(Base):
 
     def download(self, session):
         try:
-            print 'adding article ' + self.uid
+            print('adding article ' + self.uid)
             session.add(self)
             session.commit()
         except Exception as e:
-            print e.args
+            print(e.args)
             session.rollback()
 
     def __repr__(self):

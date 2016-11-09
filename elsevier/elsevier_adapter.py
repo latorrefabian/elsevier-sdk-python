@@ -1,6 +1,6 @@
 from elsevier.client import ElsevierClient
 from config import api_key as key
-from models import Article as ArticleEntry
+from .models import Article as ArticleEntry
 from elsevier.exceptions import ElsevierException
 
 max_results = 5950
@@ -10,7 +10,7 @@ client = ElsevierClient(key)
 class Mapper(object):
     def __init__(self, attr_list, raw_data):
         self.raw_data = raw_data
-        for attr, path in attr_list.iteritems():
+        for attr, path in attr_list.items():
             attr_path = list(path)
             attribute = raw_data
             while len(attr_path) > 0:
@@ -34,12 +34,12 @@ class Search(Mapper):
         raw_data = client.search_science_direct(**kwargs)['search-results']
         super(Search, self).__init__(Search.attr_list, raw_data)
         self.arguments = kwargs
-        if raw_data['entry'][0].keys()[1] != 'error':
+        if list(raw_data['entry'][0].keys())[1] != 'error':
             self.entry = [SearchEntry(x) for x in raw_data['entry']]
         else:
             self.entry = []
 
-    def next(self):
+    def __next__(self):
         new_arguments = dict(self.arguments)
         new_arguments['start'] = self.start + self.count
         return Search(**new_arguments)
@@ -89,7 +89,7 @@ class Article(Mapper):
                 title=self.title, abstract=self.abstract, full_text=self.full_text)
             entry.download(**kwargs)
         else:
-            print 'nonenglish article'
+            print('nonenglish article')
 
 class SearchEntry(Mapper):
     attr_list = {
@@ -112,6 +112,6 @@ class SearchEntry(Mapper):
         try:
             self.get(view=view).download(**kwargs)
         except Exception as e:
-            print e.args
+            print(e.args)
 
 
