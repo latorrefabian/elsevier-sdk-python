@@ -63,7 +63,7 @@ class Article(Mapper):
         'authors': ['coredata', 'dc:creator'],
         'abstract': ['coredata', 'dc:description'],
         'keywords': ['coredata', 'dcterms:subject'],
-        'full_text': ['coredata', 'dc:full_text'],
+        'full_text': ['originalText', 'xocs:doc'],
         }
 
     def __init__(self, **kwargs):
@@ -86,7 +86,8 @@ class Article(Mapper):
     def download(self, **kwargs):
         if self.english:
             entry = ArticleEntry(uid=self.uid, id_type=self.id_type,
-                title=self.title, abstract=self.abstract, full_text=self.full_text)
+                title=self.title, abstract=self.abstract,
+                full_text=self.full_text, keywords=self.keywords)
             entry.download(**kwargs)
         else:
             print('nonenglish article')

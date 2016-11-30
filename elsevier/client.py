@@ -55,7 +55,7 @@ class ElsevierClient(object):
             endpoint_format_kwargs = re.findall('{([\w_]+)}', endpoint)
             formatted_endpoint = endpoint.format(**kwargs)
             for kwarg in endpoint_format_kwargs:
-                kwargs.pop(kwarg, None)
+                kwargs.pop(kwarg, None) # remove keyword arguments used
             return self._request(formatted_endpoint, kwargs)
         return method
 

@@ -1,5 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Table, Column, Integer, String, ForeignKey
+from sqlalchemy import Table, Column, Integer, String, ForeignKey, PickleType
 from elsevier.exceptions import ElsevierException
 
 
@@ -13,7 +13,8 @@ class Article(Base):
     id_type = Column(String, nullable=False)
     title = Column(String, nullable=False)
     abstract = Column(String, nullable=False)
-    full_text = Column(String, nullable=True)
+    full_text = Column(PickleType, nullable=True)
+    keywords = Column(PickleType, nullable=True)
 
     def download(self, session):
         try:
