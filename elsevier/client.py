@@ -34,8 +34,8 @@ class ElsevierClient(object):
         return self._parse_response(response)
 
     def _parse_response(self, response):
+        content_type = response.headers['content-type'].split(';')[0]
         if response.status_code == 200:
-            content_type = response.headers['content-type'].split(';')[0]
             if content_type == 'application/json':
                 return response.json()
             elif content_type == 'text/xml':
@@ -46,8 +46,13 @@ class ElsevierClient(object):
 
         elif response.status_code == 429:
             raise ElsevierException('Quota Exceeded.')
+        elif response.status_code == 403:
+            if content_type == 'text/xml':
+                parsed_error = xmltodict.parse(response.content)
+                parsed_error = parsed_error['service-error']['status']
+                raise ElsevierException(parsed_error['statusCode'] + ': ' +
+                                        parsed_error['statusText'])
         else:
-            print(response)
             raise ElsevierException('Response code: ' + str(response.status_code))
 
     def _api_method(self, endpoint):
