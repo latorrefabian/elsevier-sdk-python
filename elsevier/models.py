@@ -23,6 +23,7 @@ class Article(Base):
             session.commit()
         except Exception as e:
             print(e.args)
+            print(self.title)
             session.rollback()
 
     def __repr__(self):
