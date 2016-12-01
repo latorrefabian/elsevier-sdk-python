@@ -74,7 +74,12 @@ class Article(Mapper):
             if self.abstract.startswith('Abstract'):
                 self.abstract = self.abstract[8: ]
                 self.english = True
+            elif self.abstract.startswith('Summary'):
+                self.abstract = self.abstract[7: ]
+                self.english = True
             else:
+                print(self.abstract)
+                time.sleep(2)
                 self.abstract = ''
                 self.english = False
         else:
