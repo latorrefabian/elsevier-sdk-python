@@ -63,3 +63,5 @@ tests.py
 # Config file
 config.py
 config.pyc
+
+elsevier/*.pkl

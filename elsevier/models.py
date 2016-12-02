@@ -26,6 +26,14 @@ class Article(Base):
             print(self.title)
             session.rollback()
 
+    def full_text_str(self):
+        sections = self.full_text['xocs:serial-item']['article']['body']
+        sections = sections['ce:sections']['ce:section']
+        text = []
+        for section in sections:
+            for paragraph in section['ce:para']:
+                   text.append(paragraph['#text'])
+
     def __repr__(self):
         return '<Article (Title=%s, id=%s)>' % (
                 self.title.encode('utf8'), self.uid.encode('utf8'))
