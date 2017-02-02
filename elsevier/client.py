@@ -6,8 +6,7 @@ import re
 
 class ElsevierClient(object):
 
-    methods = {
-        'search_scopus': '/search/scopus',
+    methods = {'search_scopus': '/search/scopus',
         'search_science_direct': '/search/scidir',
         'retrieve_abstract': '/abstract/{id_type}/{id}',
         'retrieve_object_refs': '/object/{id_type}/{id}',
@@ -46,6 +45,7 @@ class ElsevierClient(object):
 
         elif response.status_code == 429:
             raise ElsevierException('Quota Exceeded.')
+
         elif response.status_code == 403:
             if content_type == 'text/xml':
                 parsed_error = xmltodict.parse(response.content)
@@ -56,6 +56,11 @@ class ElsevierClient(object):
             raise ElsevierException('Response code: ' + str(response.status_code))
 
     def _api_method(self, endpoint):
+        """Given and endpoint, creates a function that takes as named parameters
+        the variables inside curly braces '{variable_name}'. Such named paramenters
+        are used to format such URL. The function makes a call to such URL with extra
+        parameters given by the user.
+        """
         def method(**kwargs):
             endpoint_format_kwargs = re.findall('{([\w_]+)}', endpoint)
             formatted_endpoint = endpoint.format(**kwargs)

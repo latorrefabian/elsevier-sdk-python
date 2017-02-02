@@ -1,4 +1,5 @@
 from elsevier.client import ElsevierClient
+import pdb
 from config import api_key as key
 from .models import Article as ArticleEntry
 from elsevier.exceptions import ElsevierException
@@ -37,17 +38,12 @@ class Search(Mapper):
         if list(raw_data['entry'][0].keys())[1] != 'error':
             self.entry = [SearchEntry(x) for x in raw_data['entry']]
         else:
-            self.entry = []
+            raise ElsevierException('error during search')
 
-    def __next__(self):
-        new_arguments = dict(self.arguments)
-        new_arguments['start'] = self.start + self.count
-        return Search(**new_arguments)
 
-    def previous(self):
-        new_arguments = dict(self.arguments)
-        new_arguments['start'] = self.start - self.count
-        return Search(**new_arguments)
+    def __iter__(self):
+        return iter(self.entry)
+
 
     def download(self, **kwargs):
         if int(self.total_results) > max_results:
@@ -79,7 +75,6 @@ class Article(Mapper):
                 self.english = True
             else:
                 print(self.abstract)
-                time.sleep(2)
                 self.abstract = ''
                 self.english = False
         else:

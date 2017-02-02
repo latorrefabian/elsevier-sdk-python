@@ -1,5 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Table, Column, Integer, String, ForeignKey, PickleType
+from sqlalchemy import Table, Column, Integer, String, ForeignKey, PickleType, Date
 from elsevier.exceptions import ElsevierException
 
 
@@ -15,6 +15,9 @@ class Article(Base):
     abstract = Column(String, nullable=False)
     full_text = Column(PickleType, nullable=True)
     keywords = Column(PickleType, nullable=True)
+    pub_date = Column(Date, nullable=True)
+    accept_date = Column(Date, nullable=True)
+    submit_date = Column(Date, nullable=True)
 
     def download(self, session):
         try:
