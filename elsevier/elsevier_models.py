@@ -12,9 +12,10 @@ class ScienceDirectSearch(object):
         self.client = client
         self.params = kwargs
         self.page = client.search_science_direct(**kwargs)['search-results']
+        self.total_results = int(self.page['opensearch:totalResults'])
         self.page_length = int(self.page['opensearch:itemsPerPage'])
         self.start = self.page['opensearch:startIndex']
-        if self.page['opensearch:totalResults'] > max_results:
+        if self.total_results > max_results:
             warnings.warn('Too many results, only ' + str(max_results) +
                     ' will be returned')
         if list(self.page['entry'][0].keys())[1] == 'error':
