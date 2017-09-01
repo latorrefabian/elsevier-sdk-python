@@ -1,5 +1,6 @@
 from elsevier.client import ElsevierException
 import warnings
+import pdb
 
 # There is a maximum number of results returned by the server
 max_results = 5950
@@ -42,6 +43,8 @@ class ScienceDirectSearch(object):
                     self.page = self.client.search_science_direct(**self.params)
                     self.page = self.page['search-results']
                     break
+            except KeyError:
+                break
 
 
 class SearchEntry(object):
@@ -50,6 +53,10 @@ class SearchEntry(object):
         url_components = data['prism:url'].split('/')
         self.id = url_components[-1]
         self.id_type = url_components[-2]
+        try:
+            self.title = data['coredata']['dc:title']
+        except KeyError as e:
+            self.title = None
         self.data = data
 
     def download(self, client, view='META_ABS'):

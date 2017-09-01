@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='elsevier-sdk-python',
-      version='1.0',
+      version='1.1',
       description='elsevier API python client',
       author='Fabian Latorre',
       author_email='latorrefabian@gmail.com',
